@@ -1,9 +1,13 @@
 package com.hogenbak.image.carousel.controller.rest;
 
+import com.hogenbak.image.carousel.service.FileStorageService;
+import com.hogenbak.image.carousel.service.UploadFileResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +18,8 @@ import java.nio.file.Paths;
 
 @Controller
 public class ImageController {
+
+    FileStorageService fileStorageService;
 
     @GetMapping("/images/{imageId}")
     @CrossOrigin
@@ -31,15 +37,16 @@ public class ImageController {
 
     @PostMapping("/images/new/")
     @CrossOrigin
-    public void uploadNewImage(@RequestParam(value="name") String name, HttpServletRequest request, HttpServletResponse response) {
-        try {
-            InputStream is = request.getInputStream();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(9000);
-            IOUtils.copy(is, baos);
-            Files.createDirectories(Paths.get("images/test/"));
-            Files.write(Paths.get(String.format("images/test/%s", name)), baos.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+        String fileName = fileStorageService.storeFile(file);
+
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/test/")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
     }
 }
