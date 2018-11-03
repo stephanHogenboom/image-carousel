@@ -2,23 +2,23 @@ package com.hogenbak.image.carousel.controller.rest;
 
 import com.hogenbak.image.carousel.service.FileStorageService;
 import com.hogenbak.image.carousel.service.UploadFileResponse;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Controller
+@RestController
 public class ImageController {
 
+    @Autowired
     FileStorageService fileStorageService;
 
     @GetMapping("/images/{imageId}")
@@ -37,16 +37,19 @@ public class ImageController {
 
     @PostMapping("/images/new/")
     @CrossOrigin
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
-        String fileName = fileStorageService.storeFile(file);
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            String fileName = fileStorageService.storeFile(file);
 
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/images/test/")
-                .path(fileName)
-                .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/images/test/")
+                    .path(fileName)
+                    .toUriString();
+            return new UploadFileResponse(fileName, fileDownloadUri,
+                    file.getContentType(), file.getSize());
+        } catch (Exception e) {
+            System.out.println("The file was not a multi part file!" + e.getMessage());
+            return null;
+        }
     }
 }

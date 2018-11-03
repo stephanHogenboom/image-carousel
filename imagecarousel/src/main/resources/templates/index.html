@@ -5,9 +5,9 @@
         <title>Carousel CMS</title>
     </head>
     <body>
-        <form action="/images/new/" method="post">
-            <input type="text" name="name"/>
-            <input type="file" name="image"/>
+        <form action="/images/new/" enctype="multipart/form-data" method="post">
+            <input type="text"  name="name"/>
+            <input type="file" name="file"/>
             <input type="submit"/>
         </form>
     </body>
