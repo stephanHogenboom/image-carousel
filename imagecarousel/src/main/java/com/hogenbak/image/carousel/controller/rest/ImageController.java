@@ -55,7 +55,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("images/name/all")
     @CrossOrigin
     public void getImageNames(HttpServletResponse response) {
         if (Files.exists(imagesBasePath)) {
