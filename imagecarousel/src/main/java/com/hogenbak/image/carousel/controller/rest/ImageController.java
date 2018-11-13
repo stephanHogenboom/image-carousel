@@ -21,12 +21,22 @@ public class ImageController {
     @GetMapping("/images/{imageId}")
     @CrossOrigin
     public void getImageById(@PathVariable String imageId, HttpServletResponse response) {
-        Path samedi = Paths.get("/imagecarousel/src/main/resources/samedi.jpg");
+        Path imageFolderPath = Paths.get("/images/test/");
+        response.setHeader("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
         try {
-            response.setHeader("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            response.getOutputStream().write(Files.readAllBytes(samedi));
+            if (Files.exists(imageFolderPath)) {
+                Path imagePath = imageFolderPath.resolve(Paths.get(imageId));
+                if (Files.exists(imagePath)) {
+                    response.getOutputStream().write(Files.readAllBytes(imagePath));
+                } else {
+                    response.setStatus(404);
+                }
+
+            }else {
+                response.setStatus(400);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -39,4 +49,5 @@ public class ImageController {
             System.out.println("The file was not a multi part file!" + e.getMessage());
         }
     }
+
 }
