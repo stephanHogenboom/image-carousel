@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ImageController {
     private final Logger logger = LoggerFactory.getLogger(ImageController.class.getName());
     private final Path imagesBasePath = Paths
-            .get(getEnvOrDefault("IMAGES_BASE_DIR", "/images/test"));
+            .get(getEnvOrDefault("IMAGES_BASE_DIR", "images/test"));
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -57,9 +57,15 @@ public class ImageController {
     @GetMapping("images/name/all")
     @CrossOrigin
     public void getImageNames(HttpServletResponse response) {
+        System.out.println("hi");
         if (Files.exists(imagesBasePath)) {
             try {
-                List<String> filesNames = Files.list(imagesBasePath).map(Path::toString).collect(Collectors.toList());
+                List<String> filesNames = Files
+                        .list(imagesBasePath)
+                        .map(Path::getFileName)
+                        .map(Path::toString)
+                        .collect(Collectors.toList());
+
                 String fileNamesAsJson = mapper.writeValueAsString(filesNames);
                 response.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
                 response.getOutputStream().write(fileNamesAsJson.getBytes());
@@ -67,6 +73,8 @@ public class ImageController {
                 response.setStatus(500);
                 logger.error("something went horribly wrong while returning image names");
             }
+        } else {
+            System.out.println("did not exist");
         }
 
     }
