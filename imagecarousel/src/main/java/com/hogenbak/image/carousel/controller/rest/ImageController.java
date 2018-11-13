@@ -9,8 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +23,8 @@ import java.util.stream.Collectors;
 public class ImageController {
     private final Logger logger = LoggerFactory.getLogger(ImageController.class.getName());
     private final Path imagesBasePath = Paths
-            .get(Optional.ofNullable(System.getenv("IMAGES_BASE_DIR")).orElse( "/images/test/"));
+            .get(getEnvOrDefault("IMAGES_BASE_DIR", "/images/test"));
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
@@ -45,7 +44,7 @@ public class ImageController {
                     response.setStatus(404);
                 }
             }else {
-                logger.error(String.format("map images does not exist with name %s not found", imageId));
+                logger.error(String.format("directory images does not exist with name %s not found", imageId));
                 response.setStatus(500);
             }
         } catch (IOException e) {
@@ -82,4 +81,7 @@ public class ImageController {
         }
     }
 
+    private String getEnvOrDefault(String key, String defaultValue) {
+        return Optional.ofNullable(System.getenv(key)).orElse( defaultValue);
+    }
 }
