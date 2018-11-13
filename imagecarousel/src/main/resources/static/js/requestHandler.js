@@ -1,14 +1,13 @@
 $(document).ready(function(){
-    $('#start-button').on('click', function(){
-        $.post("/shaman/new/shackleboiii").done(function(){
-            $.post("/battle/start/shackleboiii").done(function(value){
-                console.dir(value);
-                $('#centre-panel').html(value);
-            }).fail(function(){
-                alert("error");
-            });
-        }).fail(function(){
-            alert("error");
-        });
+    $.ajax({
+        url: '/images/test.jpg',
+        method: 'GET',
+        contentType: "application/octet-stream",
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(error) {
+            console.log(error);
+        }
     });
 });
