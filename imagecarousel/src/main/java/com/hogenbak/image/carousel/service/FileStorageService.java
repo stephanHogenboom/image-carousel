@@ -1,5 +1,7 @@
 package com.hogenbak.image.carousel.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -13,11 +15,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.hogenbak.image.carousel.util.EnvUtils.getEnvOrDefault;
 
 @Service
 public class FileStorageService {
 
+    private final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
     private final Path fileStorageLocation;
+    private final Path imagesBasePath = Paths
+            .get(getEnvOrDefault("IMAGES_BASE_DIR", "images/test"));
 
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
@@ -28,6 +38,19 @@ public class FileStorageService {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
+    }
+
+    public List<String> getImagesNamesInBaseFolder() {
+        try {
+            return Files
+                    .list(imagesBasePath)
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            logger.error("something went horribly wrong while returning image names");
+            return Collections.EMPTY_LIST;
         }
     }
 

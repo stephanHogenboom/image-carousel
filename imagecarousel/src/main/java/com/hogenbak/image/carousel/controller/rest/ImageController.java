@@ -15,8 +15,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.hogenbak.image.carousel.util.EnvUtils.getEnvOrDefault;
 
 
 @RestController
@@ -43,7 +44,7 @@ public class ImageController {
                     logger.warn(String.format("image with name %s not found", imageId));
                     response.setStatus(404);
                 }
-            }else {
+            } else {
                 logger.error(String.format("directory images does not exist with name %s not found", imageId));
                 response.setStatus(500);
             }
@@ -76,20 +77,19 @@ public class ImageController {
         } else {
             System.out.println("did not exist");
         }
-
     }
 
     @PostMapping("/images/new/")
     @CrossOrigin
-    public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public void uploadFile(@RequestParam("file") MultipartFile file,
+                           HttpServletResponse response) throws IOException {
         try {
             String fileName = fileStorageService.storeFile(file);
+            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+            response.sendRedirect("/");
         } catch (Exception e) {
             System.out.println("The file was not a multi part file!" + e.getMessage());
+            response.setStatus(500);
         }
-    }
-
-    private String getEnvOrDefault(String key, String defaultValue) {
-        return Optional.ofNullable(System.getenv(key)).orElse( defaultValue);
     }
 }

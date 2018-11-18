@@ -1,7 +1,15 @@
 $(document).ready(function(){
-    var image = new Image;
+
+});
+
+var getImage = function(){
+    var name = $("#imagesSelector").val();
+    doGetImage(name)
+}
+
+var doGetImage = function(name){
     $.ajax({
-        url: '/images/test.jpg',
+        url: '/images/'+name,
         method: 'GET',
         contentType: "application/octet-stream",
         xhr: function() {
@@ -15,7 +23,8 @@ $(document).ready(function(){
             img.src = url.createObjectURL(data);
         },
         error: function(error) {
-            console.log(error);
+            alert(error);
         }
     });
-});
+}
+

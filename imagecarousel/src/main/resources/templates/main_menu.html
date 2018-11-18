@@ -13,21 +13,40 @@
     <script th:src="@{/js/vue.js}"></script>
 </head>
 <body>
-    <header class="hb-header">
-        <h1>Hogenbak carousel</h1>
-        <ul>
-            <li><a href="/cms">File toevoegen</a></li>
-        </ul>
-    </header>
-    <div>
-        <label for="filename">Filename:</label>
-        <input id="filename" type="text" />
-        <input id="get-image" type="button" />
-    </div>
-    <div>
-        <img id="img">
-    </div>
+
+<form action="/images/new/" enctype="multipart/form-data" method="post">
+    <input type="text" name="name"/>
+    <input type="file" name="file"/>
+    <input type="submit"/>
+</form>
+
+<header class="hb-header">
+    <h1>Hogenbak carousel</h1>
+    <ul>
+        <li><a href="/cms">File toevoegen</a></li>
+    </ul>
+</header>
+<div>
+    <select onchange="getImage()" id="imagesSelector">
+        <th: block th:each="name: ${imageNames}">
+            <option th:text="${name}"></option>
+        </th:>
+    </select>
+</div>
+<div>
+    <img id="img" style="border: solid 2px black; width: 200px; height: 400px;"/>
+</div>
 </body>
-<script>
+<script th:inline="javascript">
+    var j = 0;
+    var carousel = function(){
+        var images = /*[[${imageNames}]]*/;
+        doGetImage(images[j++])
+        if(j >= images.length){
+            j = 0;
+        }
+        setTimeout(arguments.callee, 3000);
+    }
+    carousel();
 </script>
 </html>
