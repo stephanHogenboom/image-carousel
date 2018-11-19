@@ -14,29 +14,29 @@
 </head>
 <body>
 
-<form action="/images/new/" enctype="multipart/form-data" method="post">
-    <input type="text" name="name"/>
-    <input type="file" name="file"/>
-    <input type="submit"/>
-</form>
-
-<header class="hb-header">
+<div id="form-container">
+    <form action="/images/new/" enctype="multipart/form-data" method="post">
+        <input type="text" name="name"/>
+        <input type="file" name="file"/>
+        <input type="submit"/>
+    </form>
+</div>
+<div id="title-container">
     <h1>Hogenbak carousel</h1>
-    <ul>
-        <li><a href="/cms">File toevoegen</a></li>
-    </ul>
-</header>
-<div>
-    <select onchange="getImage()" id="imagesSelector">
+</div>
+<div id="selection-container">
+    <select class="center" onchange="getImage()" id="imagesSelector">
         <th: block th:each="name: ${imageNames}">
             <option th:text="${name}"></option>
         </th:>
     </select>
 </div>
-<div>
-    <img id="img" style="border: solid 2px black; width: 200px; height: 400px;"/>
+
+<div id="image-container">
+    <img id="img" class="center" style="height: 400px;"/>
 </div>
 </body>
+
 <script th:inline="javascript">
     var j = 0;
     var carousel = function(){
