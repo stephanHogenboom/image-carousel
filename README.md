@@ -1,11 +1,10 @@
 # image-carousel
 image-carousel
 
-An app that allows images to be uploaded and retreived to a remote server. A matching client application will eventually cycle throught these images.
+An webserver app that allows images to be uploaded and retrieved.
 
 
-
-# contributors be:
-dem Steve
-dem Norberto
-dem luigi
+# contributors:
+Stephan Hogenboom
+Nobert Bakker
+Lucas Hogenboom
