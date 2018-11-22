@@ -30,6 +30,7 @@
             <option th:text="${name}"></option>
         </th:>
     </select>
+    <button onClick="toggleLoopThrough()">stop/play</button>
 </div>
 
 <div id="image-container">
@@ -39,14 +40,26 @@
 
 <script th:inline="javascript">
     var j = 0;
+    var loopThroughImages = true;
     var carousel = function(){
-        var images = /*[[${imageNames}]]*/;
-        doGetImage(images[j++])
-        if(j >= images.length){
-            j = 0;
+        if(loopThroughImages){
+            var images = /*[[${imageNames}]]*/;
+            doGetImage(images[j++])
+            if(j >= images.length){
+                j = 0;
+            }
+            setTimeout(arguments.callee, 3000);
         }
-        setTimeout(arguments.callee, 3000);
     }
     carousel();
+
+    var toggleLoopThrough = function(){
+        if(loopThroughImages){
+            loopThroughImages = false;
+        } else {
+            loopThroughImages = true;
+            carousel();
+        }
+    }
 </script>
 </html>
