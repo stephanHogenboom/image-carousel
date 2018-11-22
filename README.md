@@ -33,7 +33,7 @@ To run postgres locally through docker open a terminal and type the following li
 
 For the default setting this would be: 
     
-    $ sudo docker run --name imagecarousel-postgres -p 5432:5432 -e POSTGRES_USER=imagecarousel -e POSTGRES_PASSWORD=taskservice -d imagecarousel
+    $ sudo docker run --name imagecarousel-postgres -p 5432:5432 -e POSTGRES_USER=imagecarousel -e POSTGRES_PASSWORD=imagecarousel -d postgres
 
 you can change the POSTGRES_USER and POSTGRES_PASSWORD to a value of your liking. If you do so, don't forget to also change the values of these fields in the /task-service/src/main/resources/application.properties file, before starting the application
 
