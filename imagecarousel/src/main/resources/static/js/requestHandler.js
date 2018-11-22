@@ -23,7 +23,7 @@ var doGetImage = function(name){
             img.src = url.createObjectURL(data);
         },
         error: function(error) {
-            alert(error);
+            console.log(error);
         }
     });
 }
