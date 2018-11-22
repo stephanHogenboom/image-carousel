@@ -56,7 +56,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("images/name/all")
+    @GetMapping("/images/name/all")
     @CrossOrigin
     public void getImageNames(HttpServletResponse response) {
         System.out.println("hi");
@@ -94,16 +94,16 @@ public class ImageController {
         }
     }
 
-    @PostMapping
-    @CrossOrigin("/images/new/{fileName}")
-    public void uploadFile(@PathVariable String imageName, HttpServletRequest request,
-                           HttpServletResponse response) {
-        try{
-            InputStream is = request.getInputStream();
-            fileStorageService.saveImage(is, imageName);
-        } catch (IOException e) {
-            logger.error("Error saving file:", e);
-            response.setStatus(500);
-        }
-    }
+//    @PostMapping
+//    @CrossOrigin("/images/new/{fileName}")
+//    public void uploadFile(@PathVariable String imageName, HttpServletRequest request,
+//                           HttpServletResponse response) {
+//        try{
+//            InputStream is = request.getInputStream();
+//            fileStorageService.saveImage(is, imageName);
+//        } catch (IOException e) {
+//            logger.error("Error saving file:", e);
+//            response.setStatus(500);
+//        }
+//    }
 }
