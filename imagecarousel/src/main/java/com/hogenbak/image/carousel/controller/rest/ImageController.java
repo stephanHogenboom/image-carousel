@@ -94,16 +94,16 @@ public class ImageController {
         }
     }
 
-//    @PostMapping
-//    @CrossOrigin("/images/new/{fileName}")
-//    public void uploadFile(@PathVariable String imageName, HttpServletRequest request,
-//                           HttpServletResponse response) {
-//        try{
-//            InputStream is = request.getInputStream();
-//            fileStorageService.saveImage(is, imageName);
-//        } catch (IOException e) {
-//            logger.error("Error saving file:", e);
-//            response.setStatus(500);
-//        }
-//    }
+    @PostMapping("/images/new/{fileName}")
+    @CrossOrigin
+    public void uploadFileByName(@PathVariable String imageName, HttpServletRequest request,
+                           HttpServletResponse response) {
+        try{
+            InputStream is = request.getInputStream();
+            fileStorageService.saveImage(is, imageName);
+        } catch (IOException e) {
+            logger.error("Error saving file:", e);
+            response.setStatus(500);
+        }
+    }
 }
