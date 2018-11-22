@@ -106,4 +106,15 @@ public class ImageController {
             response.setStatus(500);
         }
     }
+
+    @DeleteMapping("/images/delete/{fileName")
+    @CrossOrigin
+    public void deleteImageByName(@PathVariable String imageName, HttpServletResponse response) {
+        try {
+            fileStorageService.deleteImageByFileName(imageName);
+        } catch (IOException e) {
+            logger.error("failed to delete image :s", e, imageName);
+            response.setStatus(500);
+        }
+    }
 }
