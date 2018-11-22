@@ -2,6 +2,7 @@ package com.hogenbak.image.carousel.controller.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hogenbak.image.carousel.service.FileStorageService;
+import jdk.internal.util.xml.impl.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,7 +53,6 @@ public class ImageController {
                 response.setStatus(500);
             }
         } catch (IOException e) {
-            //TODO add logger to framework
             response.setStatus(500);
             System.out.println(e.getMessage());
         }
@@ -90,6 +93,17 @@ public class ImageController {
         } catch (Exception e) {
             System.out.println("The file was not a multi part file!" + e.getMessage());
             response.setStatus(500);
+        }
+    }
+
+    @PostMapping
+    @CrossOrigin("/images/new/{fileName}")
+    public void uploadFile(@PathVariable String imageName, HttpServletRequest request) {
+        try{
+            InputStream is = request.getInputStream();
+            fileStorageService.saveImage(is, imageName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
