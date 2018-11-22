@@ -25,9 +25,7 @@ import static com.hogenbak.image.carousel.util.EnvUtils.getEnvOrDefault;
 @RestController
 public class ImageController {
     private final Logger logger = LoggerFactory.getLogger(ImageController.class.getName());
-    private final Path imagesBasePath = Paths
-            .get(getEnvOrDefault("IMAGES_BASE_DIR", "images/test"));
-
+    private final Path imagesBasePath = Paths.get(getEnvOrDefault("IMAGES_BASE_DIR", "images/test"));
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
@@ -52,7 +50,7 @@ public class ImageController {
             }
         } catch (IOException e) {
             response.setStatus(500);
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
