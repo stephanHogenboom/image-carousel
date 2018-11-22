@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>imagecarousel</module>
-        <module>imagecarouselsystemtest</module>
+        <module>image-carousel-service</module>
+        <module>image-carousel-system-test</module>
     </modules>
 </project>
