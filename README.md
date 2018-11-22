@@ -5,6 +5,6 @@ An webserver app that allows images to be uploaded and retrieved.
 
 
 # contributors:
-Stephan Hogenboom . 
-Nobert Bakker . 
-Lucas Hogenboom . 
+Stephan Hogenboom   
+Nobert Bakker   
+Lucas Hogenboom   
