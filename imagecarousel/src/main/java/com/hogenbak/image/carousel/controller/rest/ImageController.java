@@ -2,7 +2,6 @@ package com.hogenbak.image.carousel.controller.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hogenbak.image.carousel.service.FileStorageService;
-import jdk.internal.util.xml.impl.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -98,12 +96,14 @@ public class ImageController {
 
     @PostMapping
     @CrossOrigin("/images/new/{fileName}")
-    public void uploadFile(@PathVariable String imageName, HttpServletRequest request) {
+    public void uploadFile(@PathVariable String imageName, HttpServletRequest request,
+                           HttpServletResponse response) {
         try{
             InputStream is = request.getInputStream();
             fileStorageService.saveImage(is, imageName);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error saving file:", e);
+            response.setStatus(500);
         }
     }
 }

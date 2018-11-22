@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -76,8 +78,11 @@ public class FileStorageService {
         }
     }
 
-    public void saveImage(InputStream is, String fileName) {
-
+    public void saveImage(InputStream is, String fileName) throws IOException {
+        byte[] bytes = new byte[is.available()];
+        FileOutputStream fos = new FileOutputStream(imagesBasePath.toString().concat(String.format("/%s", fileName)));
+        StreamUtils.copy(is, fos);
+        fos.write(bytes);
     }
 
     public Resource loadFileAsResource(String fileName) {
